@@ -28,14 +28,14 @@ where T : class, IEventMessage
         };
         
         using var consumer = new ConsumerBuilder<string, string>(config).Build();
-        consumer.Subscribe(Topic);
-        
+        Console.WriteLine($"Worker started for topic '{Topic}'");
+
         while (!stoppingToken.IsCancellationRequested)
         {
             try
             {
-                var result = consumer.Consume(stoppingToken);
-
+                consumer.Subscribe(Topic);
+                var result = consumer.Consume(TimeSpan.FromSeconds(1));
                 if (result != null)
                 {
                     await _handler.HandleAsync(result.Message.Value);
@@ -43,15 +43,16 @@ where T : class, IEventMessage
             }
             catch (ConsumeException e)
             {
-                Console.WriteLine($"Kafka {Topic}: ошибка Consume: {e.Error.Reason}. Следующая попытка через 5 сек.");
-                await Task.Delay(5000, stoppingToken);
+                Console.WriteLine($"Kafka {Topic}: consume error: {e.Error.Reason}");
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Ошибка при чтении Kafka {Topic}: {e.Message}.");
-                Console.WriteLine($"Kafka {Topic}: следующая попытка через 5 сек.");
-                await Task.Delay(5000, stoppingToken);
+                Console.WriteLine($"Kafka {Topic}: unexpected error: {e.Message}");
             }
+
+            await Task.Delay(5000, stoppingToken);
         }
+
+        Console.WriteLine($"Worker for topic '{Topic}' остановлен.");
     }
 }

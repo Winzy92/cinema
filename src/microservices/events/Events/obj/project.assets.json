@@ -676,11 +676,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\спринт-2\\cinema\\src\\microservices\\events\\Events\\Events.csproj",
+      "projectUniqueName": "D:\\repos\\src\\microservices\\events\\Events\\Events.csproj",
       "projectName": "Events",
-      "projectPath": "E:\\спринт-2\\cinema\\src\\microservices\\events\\Events\\Events.csproj",
+      "projectPath": "D:\\repos\\src\\microservices\\events\\Events\\Events.csproj",
       "packagesPath": "C:\\Users\\Дмитрий\\.nuget\\packages\\",
-      "outputPath": "E:\\спринт-2\\cinema\\src\\microservices\\events\\Events\\obj\\",
+      "outputPath": "D:\\repos\\src\\microservices\\events\\Events\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Дмитрий\\AppData\\Roaming\\NuGet\\NuGet.Config"
