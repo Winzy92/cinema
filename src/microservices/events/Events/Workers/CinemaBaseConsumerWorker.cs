@@ -27,16 +27,24 @@ where T : class, IEventMessage
             AutoOffsetReset = AutoOffsetReset.Earliest
         };
         
+        using var consumer = new ConsumerBuilder<string, string>(config).Build();
+        consumer.Subscribe(Topic);
+        
         while (!stoppingToken.IsCancellationRequested)
         {
             try
             {
-                using var consumer = new ConsumerBuilder<string, string>(config).Build();
-                consumer.Subscribe(Topic);
-                
                 var result = consumer.Consume(stoppingToken);
 
-                await _handler.HandleAsync(result.Message.Value);
+                if (result != null)
+                {
+                    await _handler.HandleAsync(result.Message.Value);
+                }
+            }
+            catch (ConsumeException e)
+            {
+                Console.WriteLine($"Kafka {Topic}: ошибка Consume: {e.Error.Reason}. Следующая попытка через 5 сек.");
+                await Task.Delay(5000, stoppingToken);
             }
             catch (Exception e)
             {
