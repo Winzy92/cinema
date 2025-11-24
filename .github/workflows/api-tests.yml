@@ -40,6 +40,11 @@ jobs:
           echo "Waiting for services to be ready..."
           sleep 120
           
+      - name: Wait for Kafka to be ready
+        run: |
+          echo "Waiting for Kafka topics to be available..."
+          sleep 60
+          
       - name: Show Events Service logs
         run: |
           docker ps -a --filter "name=cinemaabyss-events-service"
