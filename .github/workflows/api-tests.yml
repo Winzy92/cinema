@@ -40,6 +40,11 @@ jobs:
           echo "Waiting for services to be ready..."
           sleep 120
           
+      - name: Show Events Service logs
+        run: |
+          docker ps -a --filter "name=cinemaabyss-events-service"
+          docker logs cinemaabyss-events-service --tail 50
+          
       - name: Wait for Events Service to be ready
         run: |
           echo "Waiting for Events Service..."
