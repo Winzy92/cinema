@@ -26,14 +26,14 @@ where T : class, IEventMessage
             GroupId = GroupId,
             AutoOffsetReset = AutoOffsetReset.Earliest
         };
-
-        using var consumer = new ConsumerBuilder<string, string>(config).Build();
-        consumer.Subscribe(Topic);
-
+        
         while (!stoppingToken.IsCancellationRequested)
         {
             try
             {
+                using var consumer = new ConsumerBuilder<string, string>(config).Build();
+                consumer.Subscribe(Topic);
+                
                 var result = consumer.Consume(stoppingToken);
 
                 await _handler.HandleAsync(result.Message.Value);
