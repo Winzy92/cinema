@@ -5,7 +5,11 @@ using Events.Services;
 using Events.Workers;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.WebHost.UseUrls("http://0.0.0.0:8082");
+
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(8082);
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
