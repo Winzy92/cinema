@@ -44,11 +44,11 @@ jobs:
         run: |
           echo "Waiting for Events Service..."
           for i in {1..30}; do
-            if curl -s http://localhost:8082/api/events/health; then
+            if docker compose exec -T events-service curl -s -f http://localhost:8082/api/events/health; then
               echo "Events Service is up!"
               break
             fi
-            echo "Waiting..."
+            echo "Waiting 5s..."
             sleep 5
           done
       
