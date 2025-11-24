@@ -39,6 +39,18 @@ jobs:
           # Wait for services to be ready
           echo "Waiting for services to be ready..."
           sleep 120
+          
+      - name: Wait for Events Service to be ready
+        run: |
+          echo "Waiting for Events Service..."
+          for i in {1..30}; do
+            if curl -s http://localhost:8082/api/events/health; then
+              echo "Events Service is up!"
+              break
+            fi
+            echo "Waiting..."
+            sleep 5
+          done
       
       - name: Set up Node.js
         uses: actions/setup-node@v3
