@@ -30,6 +30,11 @@ services:
       - "2181:2181"
     networks:
       - cinemaabyss-network
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "localhost", "2181" ]
+      interval: 5s
+      timeout: 2s
+      retries: 20
 
   # Kafka
   kafka:
@@ -94,6 +99,8 @@ services:
       dockerfile: Dockerfile
     container_name: cinemaabyss-events-service
     depends_on:
+      postgres:
+        condition: service_healthy
       kafka:
         condition: service_healthy
     ports:
