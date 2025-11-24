@@ -85,7 +85,7 @@ services:
   # Events Microservice
   events-service:
     build:
-      context: ./src/microservices/events
+      context: ./src/microservices/events/Events
       dockerfile: Dockerfile
     container_name: cinemaabyss-events-service
     depends_on:
@@ -102,7 +102,7 @@ services:
   # Proxy Service (API Gateway)
   proxy-service:
     build:
-      context: ./src/microservices/proxy
+      context: ./src/microservices/proxy/ProxyService
       dockerfile: Dockerfile
     container_name: cinemaabyss-proxy-service
     depends_on:
@@ -113,11 +113,11 @@ services:
       - "8000:8000"
     environment:
       PORT: 8000
-      MONOLITH_URL: http://monolith:8080
-      MOVIES_SERVICE_URL: http://movies-service:8081
+      ProxyOptions_MonolithUrl: http://monolith:8080
+      ProxyOptions_MoviesServiceUrl: http://movies-service:8081
       EVENTS_SERVICE_URL: http://events-service:8082
-      GRADUAL_MIGRATION: "true"
-      MOVIES_MIGRATION_PERCENT: "50"
+      ProxyOptions_GradualMigration: "false"
+      ProxyOptions_MoviesMigrationPercent: "50"
     networks:
       - cinemaabyss-network
 

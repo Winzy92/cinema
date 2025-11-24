@@ -1,0 +1,80 @@
+@startuml
+
+!define RECTANGLE class
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(customer, "Пользователь", "Пользователь приложения: Mobile, Web, SmartTV")
+System_Boundary(sys, "Cimena") {
+
+  Container(web_ui, "Web client", "Веб-клиент — desktop/mobile web")
+  Container(mobile_app, "Mobile App", "Мобильное приложение")
+  Container(tv_app, "SmartTV App", "Приложение для SmartTV")
+
+  Container(api_gateway, "API Gateway", "Единая точка входа (REST)")
+  Container(kafka, "Event Bus\n(Kafka)", "Apache Kafka", "Асинхронная шина событий — интеграции, связи доменов")
+  Container(redis, "Cache\n(Redis)", "Redis", "Кеширование сессий")
+
+  ContainerDb(userauth_db, "UserAuth DB", "PostgreSQL", "Пользователи, авторизация, настройки")
+  ContainerDb(catalog_db, "Catalog DB", "PostgreSQL", "Видео, метаданные, жанры, актёры")
+  ContainerDb(payment_db, "Payment DB", "PostgreSQL", "Платежи, транзакции, счета")
+
+  Container(s3, "Object Storage", "S3", "Хранилище видео-файлов")
+  Container(cdn, "CDN", "Доставляет контент пользователям")
+
+  Container(auth_svc, "Auth Service", "Аутентификация, управление сессиями")
+  Container(user_svc, "User Service", "Профили, настройки")
+  Container(movies_svc, "Movies Service", "CRUD видео, метаданные")
+  Container(playback_svc, "Playback Service", "Генерация signed URLs для CDN")
+  Container(subscription_svc, "Subscription Service", "Подписки, правила доступа")
+  Container(payment_svc, "Payment Gateway", "Интеграция с платёжными провайдерами")
+  Container(notif_svc, "Notification Service", "Email, Push, SMS (через внешние провайдеры)")
+
+}
+
+System_Ext(payment_provider, "Платёжные провайдеры", "Внешние платежные шлюзы")
+System_Ext(auth_provider, "OAuth Identity Providers", "Внешние провайдеры аутентификации")
+
+Rel(customer, web_ui, "Использует", "HTTPS")
+Rel(customer, mobile_app, "Использует", "HTTPS")
+Rel(customer, tv_app, "Использует", "HTTPS")
+
+Rel(web_ui, api_gateway, "REST API", "HTTPS")
+Rel(mobile_app, api_gateway, "REST API", "HTTPS")
+Rel(tv_app, api_gateway, "REST API", "HTTPS")
+
+Rel(api_gateway, auth_svc, "Auth / Tokens", "REST")
+Rel(api_gateway, user_svc, "Профили / настройки", "REST")
+Rel(api_gateway, movies_svc, "Каталог / фильмы", "REST")
+Rel(api_gateway, playback_svc, "Получение signed URLs", "REST")
+Rel(api_gateway, subscription_svc, "Подписки / транзакции / биллинг", "REST")
+
+Rel(auth_svc, userauth_db, "SQL")
+Rel(user_svc, userauth_db, "SQL")
+Rel(subscription_svc, userauth_db, "SQL")
+
+Rel(movies_svc, catalog_db, "SQL")
+
+Rel(subscription_svc, payment_db, "SQL")
+Rel(payment_svc, payment_db, "SQL")
+
+Rel(movies_svc, s3, "Загрузка видео", "S3 API")
+Rel(playback_svc, cdn, "Генерация URLs", "HTTPS")
+Rel(cdn, s3, "Origin fetch при cache-miss", "HTTPS")
+
+Rel(subscription_svc, kafka, "Публикует обновление статуса подписки", "event")
+Rel(subscription_svc, kafka, "Подписка на обновление статуса платежа", "event")
+Rel(payment_svc, kafka, "Публикует обновление статуса платежа", "event")
+
+Rel(user_svc, kafka, "Публикует событие обновление данных пользователя", "event")
+Rel(movies_svc, kafka, "Публикует событие обновление контента каталога", "event")
+
+Rel(kafka, notif_svc, "События для триггеров уведомлений", "event")
+
+Rel(auth_svc, auth_provider, "HTTPS")
+Rel(payment_svc, payment_provider, "Платежи", "HTTPS")
+
+Rel(api_gateway, redis, "Redis")
+Rel(auth_svc, redis, "Session cache", "Redis")
+Rel(playback_svc, redis, "Signed URLs", "Redis")
+
+@enduml
