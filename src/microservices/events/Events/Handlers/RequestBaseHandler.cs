@@ -18,7 +18,7 @@ public class RequestBaseHandler<T> : IEventHandler<T>
     {
         try
         {
-            Console.WriteLine($"Приступаю к обработке сообщения {nameof(T)}");
+            Console.WriteLine($"Приступаю к обработке сообщения {typeof(T).Name}");
 
             var result = JsonSerializer.Deserialize<T>(message);
             
