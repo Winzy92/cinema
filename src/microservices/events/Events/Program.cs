@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Events.Handlers;
 using Events.Interfaces;
 using Events.Models;
