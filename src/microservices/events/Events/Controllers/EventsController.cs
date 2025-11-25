@@ -26,7 +26,7 @@ public class EventsController : ControllerBase
     public async Task<ActionResult> Movie([FromBody] MovieEvent evt)
     {
         var request = new MovieRequestMessage() { RequestId = Guid.NewGuid(), Event = evt };
-        var result = await _producer.PublishAsync("movie.event.in", JsonSerializer.Serialize(request));
+        var result = await _producer.PublishAsync("movie-events", JsonSerializer.Serialize(request));
         return Created(string.Empty, new { status = "success", result.Partition, result.Offset, eventData = new Event(){Id = request.RequestId.ToString(), Timestamp = DateTime.UtcNow, Type = "movie"} });
     }
 
@@ -34,7 +34,7 @@ public class EventsController : ControllerBase
     public async Task<ActionResult<Event>> User([FromBody] UserEvent evt)
     {
         var request = new UserRequestMessage() { RequestId = Guid.NewGuid(), Event = evt };
-        var result = await _producer.PublishAsync("user.event.in", JsonSerializer.Serialize(request));
+        var result = await _producer.PublishAsync("user-events", JsonSerializer.Serialize(request));
         return Created(string.Empty, new { status = "success", result.Partition, result.Offset, eventData = new Event(){Id = request.RequestId.ToString(), Timestamp = DateTime.UtcNow, Type = "user"} });
     }
 
@@ -42,7 +42,7 @@ public class EventsController : ControllerBase
     public async Task<ActionResult<Event>> Payment([FromBody] PaymentEvent evt)
     {
         var request = new PaymentEventMessage() { RequestId = Guid.NewGuid(), Event = evt };
-        var result = await _producer.PublishAsync("payment.event.in", JsonSerializer.Serialize(request));
+        var result = await _producer.PublishAsync("payment-events", JsonSerializer.Serialize(request));
         return Created(string.Empty, new { status = "success", result.Partition, result.Offset, eventData = new Event(){Id = request.RequestId.ToString(), Timestamp = DateTime.UtcNow, Type = "payment"} });
     }
 }
