@@ -18,11 +18,11 @@ public class RequestBaseHandler<T> : IEventHandler<T>
     {
         try
         {
-            _logger.LogInformation($"Приступаю к обработке сообщения {nameof(T)}");
+            Console.WriteLine($"Приступаю к обработке сообщения {nameof(T)}");
 
             var result = JsonSerializer.Deserialize<T>(message);
             
-            _logger.LogInformation($"RequestId = {result!.RequestId} готово к дальнейшей обработке.");
+            Console.WriteLine($"RequestId = {result!.RequestId} готово к дальнейшей обработке.");
 
         }
         catch (Exception e)
