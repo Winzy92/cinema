@@ -39,28 +39,6 @@ jobs:
           # Wait for services to be ready
           echo "Waiting for services to be ready..."
           sleep 120
-          
-      - name: Wait for Kafka to be ready
-        run: |
-          echo "Waiting for Kafka topics to be available..."
-          sleep 180
-          
-      - name: Show Events Service logs
-        run: |
-          docker ps -a --filter "name=cinemaabyss-events-service"
-          docker logs cinemaabyss-events-service --tail 50
-          
-      - name: Wait for Events Service to be ready
-        run: |
-          echo "Waiting for Events Service..."
-          for i in {1..100}; do
-            if docker compose exec -T events-service curl -s http://localhost:8082/api/events/health; then
-              echo "Events Service is up!"
-              break
-            fi
-            echo "Waiting 5s..."
-            sleep 5
-          done
       
       - name: Set up Node.js
         uses: actions/setup-node@v3
