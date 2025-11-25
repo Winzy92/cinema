@@ -18,6 +18,11 @@ builder.Configuration.AddEnvironmentVariables();
 builder.Services.AddHttpClient();
 builder.Services.AddControllers();
 
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower;
+});
+
 builder.Services.AddHostedService<MovieConsumerWorker>();
 builder.Services.AddHostedService<PaymentConsumerWorker>();
 builder.Services.AddHostedService<UserConsumerWorker>();
