@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ProxyService.Controllers;
 
 [ApiController]
-[Route("api/health")]
+[Route("[controller]")]
 public class HealthController : ControllerBase
 {
     [HttpGet]
