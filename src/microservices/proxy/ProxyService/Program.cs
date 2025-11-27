@@ -5,7 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Configuration.AddEnvironmentVariables(prefix: "ProxyOptions__");
+builder.Configuration.AddEnvironmentVariables();
 builder.Services.Configure<ProxyOptions>(builder.Configuration);
 
 var port = Environment.GetEnvironmentVariable("PORT") ?? "8000";
