@@ -7,5 +7,5 @@ public class ProxyOptions
     public string MonolithUrl { get; set; } = "http://monolith:8080";
     public string MoviesServiceUrl { get; set; } = "http://movies-service:8081";
     public bool GradualMigration { get; set; } = false;
-    public int MoviesMigrationPercent { get; set; } = 0; 
+    public string MoviesMigrationPercent { get; set; } = "0"; 
 }

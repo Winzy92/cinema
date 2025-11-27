@@ -56,7 +56,7 @@ public class MoviesProxyController : ControllerBase
         if (!_options.GradualMigration)
             return _options.MonolithUrl;
         
-        return TargetServiceUrlHelper.GetTargetServiceUrl(_options.MoviesMigrationPercent, _options.MoviesServiceUrl, _options.MonolithUrl);
+        return TargetServiceUrlHelper.GetTargetServiceUrl(Convert.ToInt32(_options.MoviesMigrationPercent), _options.MoviesServiceUrl, _options.MonolithUrl);
     }
     
 }
