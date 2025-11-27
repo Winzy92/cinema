@@ -5,8 +5,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Configuration.AddEnvironmentVariables();
-builder.Services.Configure<ProxyOptions>(builder.Configuration);
+builder.Configuration
+    .AddJsonFile("appsettings.json")
+    .AddEnvironmentVariables();
+
+builder.Services.Configure<ProxyOptions>(builder.Configuration.GetSection(ProxyOptions.Position));
 
 var port = Environment.GetEnvironmentVariable("PORT") ?? "8000";
 builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
