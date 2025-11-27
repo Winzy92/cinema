@@ -27,4 +27,20 @@ public class UsersProxyController : ControllerBase
         return Content(content, "application/json");
     }
     
+    [HttpPost]
+    public async Task<IActionResult> CreateUser([FromBody] object user)
+    {
+        var client = _httpClientFactory.CreateClient();
+
+        var body = new StringContent(
+            System.Text.Json.JsonSerializer.Serialize(user),
+            System.Text.Encoding.UTF8,
+            "application/json");
+
+        var response = await client.PostAsync($"{_options.MonolithUrl}/api/users", body);
+        var responseBody = await response.Content.ReadAsStringAsync();
+
+        return StatusCode((int)response.StatusCode, responseBody);
+    }
+    
 }

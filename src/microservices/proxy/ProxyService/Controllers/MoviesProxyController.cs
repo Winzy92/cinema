@@ -44,8 +44,8 @@ public class MoviesProxyController : ControllerBase
             System.Text.Encoding.UTF8,
             "application/json");
 
-        var response = await client.PostAsync($"{serviceUrl}/movies", content);
-        Console.WriteLine($"Запрос был обработан на {serviceUrl}/movies");
+        var response = await client.PostAsync($"{serviceUrl}/api/movies", content);
+        Console.WriteLine($"Запрос был обработан на {serviceUrl}/api/movies");
         var responseBody = await response.Content.ReadAsStringAsync();
 
         return StatusCode((int)response.StatusCode, responseBody);
