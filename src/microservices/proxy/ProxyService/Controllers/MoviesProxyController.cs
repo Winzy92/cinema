@@ -27,6 +27,7 @@ public class MoviesProxyController : ControllerBase
 
         var url = string.IsNullOrEmpty(id) ? $"{serviceUrl}/api/movies" : $"{serviceUrl}/api/movies?id={id}";
         var response = await client.GetAsync(url);
+        Console.WriteLine($"Запрос был обработан на {url}");
         var content = await response.Content.ReadAsStringAsync();
 
         return Content(content, "application/json");
@@ -44,6 +45,7 @@ public class MoviesProxyController : ControllerBase
             "application/json");
 
         var response = await client.PostAsync($"{serviceUrl}/movies", content);
+        Console.WriteLine($"Запрос был обработан на {serviceUrl}/movies");
         var responseBody = await response.Content.ReadAsStringAsync();
 
         return StatusCode((int)response.StatusCode, responseBody);
