@@ -19,6 +19,18 @@ public class MoviesProxyController : ControllerBase
         _options = options.Value;
     }
     
+    [HttpGet("debug/options")]
+    public IActionResult DebugOptions()
+    {
+        return Ok(new
+        {
+            GradualMigration = _options.GradualMigration,
+            MoviesMigrationPercent = _options.MoviesMigrationPercent,
+            MonolithUrl = _options.MonolithUrl,
+            MoviesServiceUrl = _options.MoviesServiceUrl
+        });
+    }
+    
     [HttpGet]
     public async Task<IActionResult> Get([FromQuery] string? id)
     {
