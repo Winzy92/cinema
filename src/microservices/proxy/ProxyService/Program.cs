@@ -6,6 +6,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Configuration.AddEnvironmentVariables();
+
+builder.Configuration.AddEnvironmentVariables(prefix: "ProxyOptions__");
+var gradualMigration = Environment.GetEnvironmentVariable("GradualMigration");
+Console.WriteLine($"gradualMigration =  {gradualMigration}");
+var ProxyOptions__GradualMigration = Environment.GetEnvironmentVariable("ProxyOptions__GradualMigration");
+Console.WriteLine($"ProxyOptions__GradualMigration =  {ProxyOptions__GradualMigration}");
 builder.Services.Configure<ProxyOptions>(builder.Configuration);
 
 var port = Environment.GetEnvironmentVariable("PORT") ?? "8000";
