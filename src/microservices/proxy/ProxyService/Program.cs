@@ -7,7 +7,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Configuration.AddEnvironmentVariables();
 
-builder.Services.Configure<ProxyOptions>(builder.Configuration.GetSection("ProxyOptions"));
+builder.Services.Configure<ProxyOptions>(builder.Configuration);
 
 var port = Environment.GetEnvironmentVariable("PORT") ?? "8000";
 builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
