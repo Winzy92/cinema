@@ -108,7 +108,9 @@ eventsService:
     port: 8082
     targetPort: 8082
     type: ClusterIP
-
+  env:
+    KAFKA_BROKERS: kafka:9092
+    
 # Kafka configuration
 kafka:
   enabled: true

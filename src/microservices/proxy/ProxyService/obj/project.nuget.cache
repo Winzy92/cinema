@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "2ZUphwmAHqs=",
+  "dgSpecHash": "0Sw69ZKBLhM=",
   "success": true,
-  "projectFilePath": "E:\\спринт-2\\cinema\\src\\microservices\\proxy\\ProxyService\\ProxyService.csproj",
+  "projectFilePath": "D:\\repos\\src\\microservices\\proxy\\ProxyService\\ProxyService.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Дмитрий\\.nuget\\packages\\microsoft.aspnetcore.openapi\\8.0.13\\microsoft.aspnetcore.openapi.8.0.13.nupkg.sha512",
     "C:\\Users\\Дмитрий\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",

@@ -34,11 +34,26 @@ spec:
               value: "{{ .Values.proxyService.service.targetPort }}"
             - name: DB_CONNECTION_STRING
               value: "postgres://$(DB_USER):$(DB_PASSWORD)@$(DB_HOST):$(DB_PORT)/$(DB_NAME)?sslmode=disable"
-        envFrom:
-          - configMapRef:
-              name: cinemaabyss-config
-          - secretRef:
-              name: cinemaabyss-secrets
+            - name: ProxyOptions__GradualMigration
+              valueFrom:
+                configMapKeyRef:
+                  name: cinemaabyss-config
+                  key: GRADUAL_MIGRATION
+            - name: ProxyOptions__MoviesMigrationPercent
+              valueFrom:
+                configMapKeyRef:
+                  name: cinemaabyss-config
+                  key: MOVIES_MIGRATION_PERCENT
+            - name: ProxyOptions__MonolithUrl
+              valueFrom:
+                configMapKeyRef:
+                  name: cinemaabyss-config
+                  key: MONOLITH_URL
+            - name: ProxyOptions__MoviesServiceUrl
+              valueFrom:
+                configMapKeyRef:
+                  name: cinemaabyss-config
+                  key: MOVIES_SERVICE_URL
         resources:
           {{- toYaml .Values.proxyService.resources | nindent 10 }}
         readinessProbe:

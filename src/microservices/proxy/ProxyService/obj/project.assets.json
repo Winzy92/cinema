@@ -487,11 +487,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\спринт-2\\cinema\\src\\microservices\\proxy\\ProxyService\\ProxyService.csproj",
+      "projectUniqueName": "D:\\repos\\src\\microservices\\proxy\\ProxyService\\ProxyService.csproj",
       "projectName": "ProxyService",
-      "projectPath": "E:\\спринт-2\\cinema\\src\\microservices\\proxy\\ProxyService\\ProxyService.csproj",
+      "projectPath": "D:\\repos\\src\\microservices\\proxy\\ProxyService\\ProxyService.csproj",
       "packagesPath": "C:\\Users\\Дмитрий\\.nuget\\packages\\",
-      "outputPath": "E:\\спринт-2\\cinema\\src\\microservices\\proxy\\ProxyService\\obj\\",
+      "outputPath": "D:\\repos\\src\\microservices\\proxy\\ProxyService\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Дмитрий\\AppData\\Roaming\\NuGet\\NuGet.Config"

@@ -60,6 +60,7 @@
 Приложите скриншот тестов и скриншот состояния топиков Kafka из UI http://localhost:8090 
 
 ![EventsMicroserviceTests.png](Screenshots%2FEventsMicroserviceTests.png)
+![Topics.png](Screenshots%2FTopics.png)
 
 # Задание 3
 
