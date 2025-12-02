@@ -30,6 +30,11 @@ services:
       - "2181:2181"
     networks:
       - cinemaabyss-network
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "localhost", "2181" ]
+      interval: 5s
+      timeout: 2s
+      retries: 20
 
   # Kafka
   kafka:
@@ -49,6 +54,11 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - cinemaabyss-network
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "localhost", "9092" ]
+      interval: 5s
+      timeout: 2s
+      retries: 20
 
   # Monolith Service
   monolith:
@@ -85,12 +95,14 @@ services:
   # Events Microservice
   events-service:
     build:
-      context: ./src/microservices/events
+      context: ./src/microservices/events/Events
       dockerfile: Dockerfile
     container_name: cinemaabyss-events-service
     depends_on:
-      - postgres
-      - kafka
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
     ports:
       - "8082:8082"
     environment:
@@ -98,11 +110,16 @@ services:
       KAFKA_BROKERS: kafka:9092
     networks:
       - cinemaabyss-network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8082/api/events/health" ]
+      interval: 5s
+      timeout: 2s
+      retries: 70
 
   # Proxy Service (API Gateway)
   proxy-service:
     build:
-      context: ./src/microservices/proxy
+      context: ./src/microservices/proxy/ProxyService
       dockerfile: Dockerfile
     container_name: cinemaabyss-proxy-service
     depends_on:
@@ -113,11 +130,11 @@ services:
       - "8000:8000"
     environment:
       PORT: 8000
-      MONOLITH_URL: http://monolith:8080
-      MOVIES_SERVICE_URL: http://movies-service:8081
+      ProxyOptions__MonolithUrl: http://monolith:8080
+      ProxyOptions__MoviesServiceUrl: http://movies-service:8081
       EVENTS_SERVICE_URL: http://events-service:8082
-      GRADUAL_MIGRATION: "true"
-      MOVIES_MIGRATION_PERCENT: "50"
+      ProxyOptions__GradualMigration: "true"
+      ProxyOptions__MoviesMigrationPercent: "50"
     networks:
       - cinemaabyss-network
 
@@ -126,7 +143,8 @@ services:
     image: provectuslabs/kafka-ui:latest
     container_name: cinemaabyss-kafka-ui
     depends_on:
-      - kafka
+      kafka:
+        condition: service_healthy
     ports:
       - "8090:8080"
     environment:
